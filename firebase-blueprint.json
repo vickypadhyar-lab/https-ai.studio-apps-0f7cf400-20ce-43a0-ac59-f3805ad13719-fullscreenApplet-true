@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information including ranking points and social stats",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "avatar": { "type": "string" },
+        "bio": { "type": "string" },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "starPoints": { "type": "number" },
+        "giftsSent": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "starPoints", "followersCount", "followingCount"]
+    },
+    "Room": {
+      "title": "Live Room",
+      "description": "State for a live voice or video room",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "hostId": { "type": "string" },
+        "type": { "type": "string", "enum": ["voice", "stream"] },
+        "viewerCount": { "type": "number" },
+        "isLive": { "type": "boolean" },
+        "pkBattleId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "hostId", "type"]
+    },
+    "Message": {
+      "title": "Room Message",
+      "description": "Chat message or gift announcement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "text": { "type": "string" },
+        "giftId": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["id", "userId", "userName", "text", "timestamp"]
+    },
+    "Battle": {
+      "title": "PK Battle",
+      "description": "Real-time state for a competition",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "roomAId": { "type": "string" },
+        "roomBId": { "type": "string" },
+        "scoreA": { "type": "number" },
+        "scoreB": { "type": "number" },
+        "expiresAt": { "type": "number" }
+      },
+      "required": ["id", "roomAId", "roomBId", "scoreA", "scoreB", "expiresAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "users/{userId}/followers/{followerId}": {
+      "schema": { "type": "object", "properties": { "timestamp": { "type": "number" } } },
+      "description": "User followers"
+    },
+    "users/{userId}/following/{followedId}": {
+      "schema": { "type": "object", "properties": { "timestamp": { "type": "number" } } },
+      "description": "Users followed by this user"
+    },
+    "rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Active live rooms"
+    },
+    "rooms/{roomId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Real-time chat feed"
+    },
+    "battles/{battleId}": {
+      "schema": "Battle",
+      "description": "Global PK Battle states"
+    }
+  }
+}

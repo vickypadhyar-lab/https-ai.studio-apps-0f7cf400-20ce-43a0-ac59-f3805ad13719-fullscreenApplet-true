@@ -1,0 +1,9 @@
+{
+  "name": "VP Live Stream",
+  "description": "Real-time music live streaming platform with voice rooms, PK battles, gifting, and global leaderboards.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}
